@@ -1,22 +1,30 @@
 <!-- Islamic Pattern Border -->
 <div class="relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('https://c1.wallpaperflare.com/preview/682/173/209/quran-ramadhan-muslim-islamic-religious-mubarak.jpg');">
   <div class="absolute inset-0 bg-black bg-opacity-60 z-0"></div>
+  
+  <!-- Theme selector -->
+ 
+  
   <!-- Content with overlay -->
   <div class="relative z-10 bg-black bg-opacity-60 p-8 rounded-lg shadow-lg text-center text-white max-w-md mx-auto border-4 border-yellow-500 border-dotted">
     <!-- Loading spinner -->
-    <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
-      <div class="w-16 h-16 border-t-4 border-yellow-500 border-solid rounded-full animate-spin"></div>
+    <div *ngIf="isLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 rounded-lg">
+      <div class="w-16 h-16 border-t-4 border-yellow-500 border-solid rounded-full animate-spin mb-2"></div>
+      <div class="w-3/4 h-2 bg-gray-700 rounded-full">
+        <div class="h-full bg-yellow-500 rounded-full animate-progress"></div>
+      </div>
     </div>
-
-
-    <button  (click)="generateRandomAyah()" class="bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-yellow-600 hover:scale-105 transition-transform duration-300 ease-in-out">
+    
+    <!-- Button -->
+    <button (click)="generateRandomAyah()" class="btn font-bold py-3 px-6 rounded-lg transition-transform duration-300 ease-in-out">
       Generate Random Ayah
     </button>
-
+    
+    <!-- Ayah display -->
     <p *ngIf="surahAyah" class="mt-4 text-lg font-semibold opacity-0 transition-opacity duration-500 ease-in-out" [ngClass]="{'opacity-100': surahAyah}">
       Surah Ayah: {{ surahAyah }}
     </p>
-
+    
     <!-- Google Search Button -->
     <a *ngIf="surahAyah" [href]="googleSearchUrl" target="_blank" class="block mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out">
       Search on Google

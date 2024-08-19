@@ -134,6 +134,11 @@ export class AppComponent {
     { surah: 114, ayah: 6 }    // An-Nas
   ];
 
+  changeTheme(event: Event) {
+    const theme = (event.target as HTMLSelectElement).value;
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+  
   generateRandomAyah() {
     this.isLoading = true;
     setTimeout(() => { 
