@@ -6,13 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AzanService {
-  private apiUrl = 'https://api.aladhan.com/v1/timingsByCity'; // Replace with your API endpoint
-  private apiKey = 'YOUR_API_KEY'; // Replace with your API key
+  private apiUrl = 'https://api.aladhan.com/v1/timingsByCity'; 
 
-  constructor(private http: HttpClient) {}
+constructor(private http: HttpClient) {}
 
-  getAzanTimes(city: string, country: string): Observable<any> {
-    const url = `${this.apiUrl}?city=${city}&country=${country}&apikey=${this.apiKey}`;
-    return this.http.get(url);
-  }
+getAzanTimes(city: string, country: string): Observable<any> {
+  const url = `${this.apiUrl}?city=${city}&country=${country}`;
+  return this.http.get(url);
+}
 }

@@ -38,6 +38,7 @@
     </button>
 
     <!-- Azan Times Display -->
+    <h3 *ngIf="error" class="text-xl font-bold mb-4 text-red-800">{{error}}</h3>
   <!-- app.component.html -->
 <div *ngIf="azanTimes" class="mt-4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
   <h3 class="text-xl font-bold mb-4 text-gray-800">Azan Times:</h3>

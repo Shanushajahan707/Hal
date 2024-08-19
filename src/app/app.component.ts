@@ -18,7 +18,7 @@ export class AppComponent {
   todayDate: Date = new Date();
   universityName: string = 'Your University Name';
   hijriYear!: string; // e.g., '1445 AH'
-
+  error!:string
   surahAyahData = [
     { surah: 1, ayah: 7 }, // Al-Fatiha
     { surah: 2, ayah: 286 }, // Al-Baqarah
@@ -140,6 +140,8 @@ export class AppComponent {
 
   generateRandomAyah() {
     this.isLoading = true;
+    this.error=''
+
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * this.surahAyahData.length);
       const randomSurahAyah = this.surahAyahData[randomIndex];
@@ -169,8 +171,10 @@ export class AppComponent {
         this.arabicMonth = response.data.date.hijri.month.ar;
         console.log(response);
         this.isLoading = false;
+        this.error=''
       },
       (error) => {
+        this.error=error.error.data
         console.error('Error fetching Azan times', error);
         this.isLoading = false;
       }
