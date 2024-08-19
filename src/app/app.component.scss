@@ -1,14 +1,9 @@
-
-
 button {
   position: relative;
   z-index: 10;
   transition: background-color 0.3s, box-shadow 0.3s;
   background-color: #fbbf24; /* Darker yellow on click */
 }
-
-
-
 
 p,
 a {
@@ -26,13 +21,15 @@ a {
   }
 }
 
-
-
 @keyframes progress {
-    0% { width: 0%; }
-    100% { width: 100%; }
+  0% {
+    width: 0%;
   }
-  
-  .animate-progress {
-    animation: progress 2s ease-in-out infinite;
+  100% {
+    width: 100%;
   }
+}
+
+.animate-progress {
+  animation: progress 2s ease-in-out infinite;
+}
