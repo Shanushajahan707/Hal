@@ -1,75 +1,124 @@
-<!-- app.component.html -->
-<div class="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-  style="background-image: url('https://c1.wallpaperflare.com/preview/682/173/209/quran-ramadhan-muslim-islamic-religious-mubarak.jpg');">
-  <div class="absolute inset-0 bg-black bg-opacity-60 z-0"></div>
+<div class="min-h-screen bg-cover bg-center flex items-center justify-center p-4 app-background"
+  [style.backgroundImage]="'url(https://images.pexels.com/photos/318451/pexels-photo-318451.jpeg?cs=srgb&dl=pexels-tayebmezahdia-318451.jpg&fm=jpg)'">
+  <!-- Main Card -->
+  <div class="w-full max-w-md relative">
+    <!-- Decorative Elements -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-2xl opacity-20 blur-lg"></div>
 
-  <!-- Content with overlay -->
-  <div class="relative  flex flex-col z-10 bg-black bg-opacity-60 p-8 rounded-lg shadow-lg text-center text-white max-w-md mx-auto border-4 border-yellow-500 border-dotted">
-    
-    <!-- Loading spinner -->
-    <div *ngIf="isLoading"
-      class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 rounded-lg">
-      <div class="w-16 h-16 border-t-4 border-yellow-500 border-solid rounded-full animate-spin mb-2"></div>
-      <div class="w-3/4 h-2 bg-gray-700 rounded-full">
-        <div class="h-full bg-yellow-500 rounded-full animate-progress"></div>
+    <!-- Main Content -->
+    <div class="relative bg-white/5 backdrop-blur-lg rounded-xl shadow-2xl overflow-hidden border border-white/10">
+      <!-- Header -->
+      <div class="p-6 text-center border-b border-white/10">
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent">
+          Divine Guidance
+        </h1>
+        <p class="text-gray-300 text-sm mt-1">Seek wisdom through the Holy Quran</p>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading"
+        class="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center z-10">
+        <div class="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="text-yellow-400 font-medium">Seeking Divine Guidance...</p>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="p-6">
+        <!-- Ayah Section -->
+        <div *ngIf="!showLocationInput" class="mb-8">
+          <button (click)="generateRandomAyah()"
+            class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-yellow-500/20 mb-6">
+            <i class="fas fa-quran mr-2"></i> Get Divine Guidance
+          </button>
+
+          <!-- Ayah Display -->
+          <div *ngIf="surahAyah"
+            class="bg-white/5 p-6 rounded-lg border border-yellow-500/20 transition-all duration-500 ease-out"
+            [class.animate-fade-in]="surahAyah">
+            <div class="text-yellow-400 text-4xl mb-4">"</div>
+            <p class="text-gray-200 text-center text-lg leading-relaxed mb-4">
+              <span *ngIf="surahAyah">Surah {{ surahAyah }}</span>
+              <span *ngIf="!surahAyah">Click the button to get a random ayah</span>
+            </p>
+            <div class="text-yellow-400 text-4xl text-right mt-2">"</div>
+
+            <div class="mt-6">
+              <a [href]="googleSearchUrl" target="_blank"
+                class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300">
+                <i class="fas fa-book-open mr-2"></i> Read Full Ayah
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prayer Times Section -->
+        <div class="mt-8">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-yellow-400">Prayer Times</h3>
+            <button (click)="toggleLocationInput()"
+              class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors duration-200">
+              {{ showLocationInput ? 'Cancel' : (azanTimes ? 'Change Location' : 'Set Location') }}
+            </button>
+          </div>
+
+          <!-- Location Input -->
+          <div *ngIf="showLocationInput" class="mb-6 space-y-3">
+            <input type="text" [(ngModel)]="city" placeholder="Enter City"
+              class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              (keyup.enter)="fetchAzanTimes()">
+            <input type="text" [(ngModel)]="country" placeholder="Enter Country"
+              class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              (keyup.enter)="fetchAzanTimes()">
+            <button (click)="fetchAzanTimes()"
+              class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors duration-300">
+              Get Prayer Times
+            </button>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="error" class="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg mb-4">
+            {{ error }}
+          </div>
+
+          <!-- Prayer Times Display -->
+          <div *ngIf="azanTimes" class="bg-white/5 rounded-xl overflow-hidden border border-white/10">
+            <div class="grid grid-cols-2 gap-4 p-4">
+              <div class="p-3 text-center bg-yellow-500/10 rounded-lg">
+                <div class="text-sm text-yellow-400">Fajr</div>
+                <div class="text-xl font-bold text-white">{{ azanTimes.Fajr }}</div>
+              </div>
+              <div class="p-3 text-center bg-white/5 rounded-lg">
+                <div class="text-sm text-gray-400">Dhuhr</div>
+                <div class="text-xl font-bold text-white">{{ azanTimes.Dhuhr }}</div>
+              </div>
+              <div class="p-3 text-center bg-white/5 rounded-lg">
+                <div class="text-sm text-gray-400">Asr</div>
+                <div class="text-xl font-bold text-white">{{ azanTimes.Asr }}</div>
+              </div>
+              <div class="p-3 text-center bg-white/5 rounded-lg">
+                <div class="text-sm text-gray-400">Maghrib</div>
+                <div class="text-xl font-bold text-white">{{ azanTimes.Maghrib }}</div>
+              </div>
+            </div>
+            <div class="bg-black/20 p-3 text-center">
+              <div class="text-sm text-yellow-400">Isha</div>
+              <div class="text-lg font-bold text-white">{{ azanTimes.Isha }}</div>
+            </div>
+          </div>
+
+          <!-- Date Information -->
+          <div *ngIf="arabicMonth" class="mt-4 text-center text-sm">
+            <p class="text-white bg-black/30 px-4 py-2 rounded-lg">{{ todayDate | date:'fullDate' }} • {{ hijriYear }}
+            </p>
+            <p class="text-yellow-300 font-medium mt-2 text-lg">{{ arabicMonth }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 text-center text-xs text-gray-500 border-t border-white/10">
+        <p>Made with <span class="text-red-500">❤</span> for {{ universityName || 'Allah' }}</p>
       </div>
     </div>
-
-    <!-- Button to generate Ayah -->
-    <button *ngIf="!showLocationInput" (click)="generateRandomAyah()" class="btn font-bold py-3 mb-4 px-6 rounded-lg transition-transform duration-300 ease-in-out">
-      Generate Random Ayah
-    </button>
-    
-    <!-- Toggle Location Input Button -->
-
-    <!-- Location Input and Fetch Button -->
-    <div *ngIf="showLocationInput" class="mt-4 flex flex-col gap-3 rounded">
-      <input type="text" [(ngModel)]="city" placeholder="City" class="border p-2 rounded mr-2 text-black">
-      <input type="text" [(ngModel)]="country" placeholder="Country" class="border p-2 rounded mr-2 text-black">
-      <button (click)="fetchAzanTimes()" class="btn font-bold py-3 mb-4 px-6 rounded-lg transition-transform duration-300 ease-in-out">Fetch Azan Times</button>
-    </div>
-    
-    <!-- Fetch Azan Times Button -->
-   
-   
-
-    <button *ngIf="!showLocationInput && !azanTimes" (click)="toggleLocationInput()" class="btn font-bold py-3 mb-4 px-6 rounded-lg transition-transform duration-300 ease-in-out">
-      Fetch Azan Times
-    </button>
-
-    <!-- Azan Times Display -->
-    <h3 *ngIf="error" class="text-xl font-bold mb-4 text-red-800">{{error}}</h3>
-  <!-- app.component.html -->
-<div *ngIf="azanTimes" class="mt-4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
-  <h3 class="text-xl font-bold mb-4 text-gray-800">Azan Times:</h3>
-  <ul class="list-disc list-inside mb-4 text-gray-700">
-    <li><strong class="font-semibold">Fajr:</strong> {{ azanTimes.Fajr }}</li>
-    <li><strong class="font-semibold">Dhuhr:</strong> {{ azanTimes.Dhuhr }}</li>
-    <li><strong class="font-semibold">Asr:</strong> {{ azanTimes.Asr }}</li>
-    <li><strong class="font-semibold">Maghrib:</strong> {{ azanTimes.Maghrib }}</li>
-    <li><strong class="font-semibold">Isha:</strong> {{ azanTimes.Isha }}</li>
-  </ul>
-
-  <!-- Additional Information -->
-  <div class="mt-4">
-    <p class="text-gray-700 mb-2"><strong>Arabic Month:</strong> {{ arabicMonth }}</p>
-    <p class="text-gray-700 mb-2"><strong>Today's Date:</strong> {{ todayDate | date:'fullDate' }}</p>
-    <p class="text-gray-700 mb-2"><strong>University:</strong> {{ universityName }}</p>
-    <p class="text-gray-700 mb-2"><strong>Hijri Year:</strong> {{ hijriYear }}</p>
-  </div>
-</div>
-
-
-    <!-- Ayah display -->
-    <p *ngIf="surahAyah && !showLocationInput" class="mt-4 text-lg font-semibold opacity-0 transition-opacity duration-500 ease-in-out"
-      [ngClass]="{ 'opacity-100': surahAyah }">
-      Surah Ayah: {{ surahAyah }}
-    </p>
-
-    <!-- Google Search Button -->
-    <a *ngIf="surahAyah && !showLocationInput" [href]="googleSearchUrl" target="_blank"
-      class="block mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out">
-      Search on Google
-    </a>
   </div>
 </div>

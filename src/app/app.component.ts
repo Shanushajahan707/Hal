@@ -10,7 +10,7 @@ export class AppComponent {
   isLoading = false;
   showLocationInput = false;
   city: string = '';
-  country: string = '';
+  country: string = 'India';
   azanTimes: any = null;
   surahAyah: string = '';
   googleSearchUrl: string | null = null;
@@ -18,7 +18,7 @@ export class AppComponent {
   todayDate: Date = new Date();
   universityName: string = 'Your University Name';
   hijriYear!: string; // e.g., '1445 AH'
-  error!:string
+  error!: string
   surahAyahData = [
     { surah: 1, ayah: 7 }, // Al-Fatiha
     { surah: 2, ayah: 286 }, // Al-Baqarah
@@ -136,11 +136,11 @@ export class AppComponent {
     { surah: 114, ayah: 6 }, // An-Nas
   ];
 
-  constructor(private _azan: AzanService) {}
+  constructor(private _azan: AzanService) { }
 
   generateRandomAyah() {
     this.isLoading = true;
-    this.error=''
+    this.error = ''
 
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * this.surahAyahData.length);
@@ -171,10 +171,10 @@ export class AppComponent {
         this.arabicMonth = response.data.date.hijri.month.ar;
         console.log(response);
         this.isLoading = false;
-        this.error=''
+        this.error = ''
       },
       (error) => {
-        this.error=error.error.data
+        this.error = error.error.data
         console.error('Error fetching Azan times', error);
         this.isLoading = false;
       }
